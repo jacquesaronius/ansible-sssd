@@ -1,0 +1,18 @@
+---
+# vars file for sssd
+
+ubuntu_packages: 
+  - sssd-ad
+  - sssd-tools
+  - realmd
+  - adcli
+  - krb5-user
+
+rhel_packages:
+  - sssd
+  - sssd-krb5
+  - adcli
+  - samba-common-tools
+  - oddjob_realmd
+  - krb5_workstation
+  - oddjob_mkhomedir
