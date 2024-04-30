@@ -1,2 +1,25 @@
 ---
 # tasks file for sssd
+
+- name: Include additional variables
+  include_vars: secrets.yml
+
+- name: Configure SSSD on RHEL based systems
+  block:
+
+    - name: Modify DNS configuration
+      command: "nmcli connection modify {{ network_adapter }} ipv4.dns '{{ dns_server }}' ipv4.method auto"
+
+    - name: Reactivate the network connection
+      command: "nmcli connection up {{ network_adapter }}"
+
+    - name: Install prequisite packages for SSSD using DNF.
+      ansible.builtin.dnf:
+        name: "{{ rhel_packages }}"
+        state: present
+
+    - name: Join the system to Active Directory
+      shell: "echo {{ ad_join_password }} | realm join -v -U {{ ad_join_user }} --computer-ou='{{ ou }}' {{ dc }}"
+      # Do additional configuration here
+  become: true
+  when: ansible_os_family == 'RedHat'

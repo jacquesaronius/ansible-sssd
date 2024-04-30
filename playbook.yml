@@ -1,0 +1,5 @@
+---
+- name: Install and configure SSSD
+  hosts: all
+  roles:
+    - sssd
